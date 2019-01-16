@@ -44,12 +44,12 @@ def SimpleModel():
     d1 = 15.5
     d0 = d1 / 2.0 ** doublings
 
-    print 'interval (days)', interval
-    print 'interval (years)', interval / 365
-    print 'dt', dt
-    print 'doublings', doublings
-    print 'd1', d1
-    print 'd0', d0
+    print('interval (days)', interval)
+    print('interval (years)', interval / 365)
+    print('dt', dt)
+    print('doublings', doublings)
+    print('d1', d1)
+    print('d0', d0)
 
     # assume an initial linear measure of 0.1 cm
     d0 = 0.1
@@ -61,19 +61,19 @@ def SimpleModel():
     # what linear doubling time does that imply?
     dt = interval / doublings
 
-    print 'doublings', doublings
-    print 'dt', dt
+    print('doublings', doublings)
+    print('dt', dt)
 
     # compute the volumetric doubling time and RDT
     vdt = dt / 3
     rdt = 365 / vdt
 
-    print 'vdt', vdt
-    print 'rdt', rdt
+    print('vdt', vdt)
+    print('rdt', rdt)
 
     cdf = MakeCdf()
     p = cdf.Prob(rdt)
-    print 'Prob{RDT > 2.4}', 1-p
+    print('Prob{RDT > 2.4}', 1-p)
 
 
 def MakeCdf():
@@ -109,7 +109,7 @@ def PlotCdf(cdf):
     thinkplot.Clf()
     thinkplot.PrePlot(num=2)
     mxs, mys = ModelCdf()
-    thinkplot.Plot(mxs, mys, label='model', linestyle='dashed') 
+    thinkplot.Plot(mxs, mys, label='model', linestyle='dashed')
 
     thinkplot.Plot(xs, ps, 'gs', label='data')
     thinkplot.Save(root='kidney2',
@@ -139,7 +139,7 @@ def QQPlot(cdf, fit):
                 formats=FORMATS,
                 xlabel='Actual',
                 ylabel='Model')
-    
+
 
 def FitCdf(cdf):
     """Fits a line to the log CCDF and returns the slope.
@@ -151,7 +151,7 @@ def FitCdf(cdf):
 
     xs = xs[1:-1]
     lcps = [math.log(p) for p in cps[1:-1]]
-    
+
     _inter, slope = correlation.LeastSquares(xs, lcps)
     return -slope
 
@@ -352,7 +352,7 @@ class Cache(object):
         """Gets the joint distribution of age and size.
 
         Map from (age, log size in cm) to log freq
-        
+
         Returns: new Pmf object
         """
         joint = thinkbayes.Joint()
@@ -389,8 +389,8 @@ class Cache(object):
         for bucket in sorted(self.GetBuckets()):
             ss = self.GetSequence(bucket)
             diameter = BucketToCm(bucket)
-            print diameter, len(ss)
-        
+            print(diameter, len(ss))
+
     def Correlation(self):
         """Computes the correlation between log volumes and rdts."""
         vs, rdts = zip(*self.initial_rdt)
@@ -421,11 +421,11 @@ class Calculator(object):
             sequences.append(seq)
 
             if i % 100 == 0:
-                print i
+                print(i)
 
         return sequences
 
-    def MakeSequence(self, rdt_seq, v0=0.01, interval=INTERVAL, 
+    def MakeSequence(self, rdt_seq, v0=0.01, interval=INTERVAL,
                      vmax=Volume(MAXSIZE)):
         """Simulate the growth of a tumor.
 
@@ -549,7 +549,7 @@ class Calculator(object):
             if cm < min_size or cm > 20.0:
                 continue
             xs.append(cm)
-            cdf = self.cache.ConditionalCdf(bucket)      
+            cdf = self.cache.ConditionalCdf(bucket)
             ps = [cdf.Percentile(p) for p in percentiles]
             ts.append(ps)
 
@@ -568,8 +568,8 @@ class Calculator(object):
         yys = zip(*ts)
 
         for ys, linewidth, alpha, label in zip(yys, linewidths, alphas, labels):
-            options = dict(color='blue', linewidth=linewidth, 
-                                alpha=alpha, label=label, markersize=2)
+            options = dict(color='blue', linewidth=linewidth,
+                           alpha=alpha, label=label, markersize=2)
 
             # plot the data points
             thinkplot.Plot(xs, ys, 'bo', **options)
@@ -665,7 +665,7 @@ def PrintTable(fp, xs, ts):
     fp.write(r'\hline' '\n')
 
     for i, (cm, ps) in enumerate(zip(xs, ts)):
-        #print cm, ps
+        # print(cm, ps)
         if i % 3 == 0:
             PrintCI(fp, cm, ps)
 
@@ -725,9 +725,9 @@ def TestCorrelation(cdf):
 
     rdt_seq = CorrelatedGenerator(cdf, rho)
     xs = [rdt_seq.next() for _ in range(n)]
-    
+
     rho2 = correlation.SerialCorr(xs)
-    print rho, rho2
+    print(rho, rho2)
     cdf2 = thinkbayes.MakeCdfFromList(xs)
 
     thinkplot.Cdfs([cdf, cdf2])
@@ -737,7 +737,7 @@ def TestCorrelation(cdf):
 def main(script):
     for size in [1, 5, 10]:
         bucket = CmToBucket(size)
-        print 'Size, bucket', size, bucket
+        print('Size, bucket', size, bucket)
 
     SimpleModel()
 
@@ -761,10 +761,10 @@ def main(script):
     calc.PlotBuckets()
 
     _ = calc.MakeSequences(1900, rho, fit)
-    print 'V0-RDT correlation', calc.cache.Correlation()
+    print('V0-RDT correlation', calc.cache.Correlation())
 
-    print '15.5 Probability age > 8 year', calc.cache.ProbOlder(15.5, 8)
-    print '6.0 Probability age > 8 year', calc.cache.ProbOlder(6.0, 8)
+    print('15.5 Probability age > 8 year', calc.cache.ProbOlder(15.5, 8))
+    print('6.0 Probability age > 8 year', calc.cache.ProbOlder(6.0, 8))
 
     calc.PlotConditionalCdfs()
 
@@ -775,5 +775,3 @@ def main(script):
 
 if __name__ == '__main__':
     main(*sys.argv)
-
-

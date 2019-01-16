@@ -88,11 +88,11 @@ def Version3():
 def main():
 
     suite = Version3()
-    print suite.Mean()
+    print(suite.Mean())
 
     thinkplot.Pmf(suite)
     thinkplot.Show()
-    
+
 
 
 if __name__ == '__main__':

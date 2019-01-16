@@ -80,18 +80,18 @@ def main():
 
     for high in [500, 1000, 2000]:
         suite = MakePosterior(high, dataset, Train2)
-        print high, suite.Mean()
+        print(high, suite.Mean())
 
     thinkplot.Save(root='train3',
                    xlabel='Number of trains',
                    ylabel='Probability')
 
     interval = Percentile(suite, 5), Percentile(suite, 95)
-    print interval
+    print(interval)
 
     cdf = thinkbayes.MakeCdfFromPmf(suite)
     interval = cdf.Percentile(5), cdf.Percentile(95)
-    print interval
+    print(interval)
 
 
 if __name__ == '__main__':

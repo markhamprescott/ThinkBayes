@@ -14,7 +14,7 @@ from math import exp
 by Allen B. Downey
 
 I got the idea from Tom Campbell-Ricketts author of the Maximum
-Entropy blog at 
+Entropy blog at
 
 http://maximum-entropy-blog.blogspot.com
 
@@ -38,6 +38,7 @@ are emitted?
 
 FORMATS = ['pdf', 'eps', 'png']
 
+
 class Emitter(thinkbayes.Suite):
     """Represents hypotheses about r."""
 
@@ -56,7 +57,7 @@ class Emitter(thinkbayes.Suite):
         data: number of particles counted
         """
         thinkbayes.Suite.Update(self, data)
-        
+
         for detector in self.Values():
             detector.Update()
 
@@ -80,7 +81,7 @@ class Emitter(thinkbayes.Suite):
         return thinkbayes.MakePmfFromItems(items, name=name)
 
     def DistOfN(self, name=''):
-        """Returns the PMF of n."""        
+        """Returns the PMF of n."""
         return thinkbayes.MakeMixture(self, name=name)
 
 
@@ -114,7 +115,7 @@ class Emitter2(thinkbayes.Suite):
         return thinkbayes.MakePmfFromItems(items, name=name)
 
     def DistOfN(self, name=''):
-        """Returns the PMF of n."""        
+        """Returns the PMF of n."""
         return thinkbayes.MakeMixture(self, name=name)
 
 
@@ -156,7 +157,7 @@ class Detector(thinkbayes.Suite):
             like = self.Likelihood(data, hypo)
             total += prob * like
         return total
-        
+
 
 def main():
     k = 15
@@ -168,7 +169,7 @@ def main():
         suite = Detector(r, f, step=1)
         suite.Update(k)
         thinkplot.Pmf(suite)
-        print suite.MaximumLikelihood()
+        print(suite.MaximumLikelihood())
 
     thinkplot.Save(root='jaynes1',
                    xlabel='Number of particles (n)',

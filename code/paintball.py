@@ -32,7 +32,7 @@ def StrafingSpeed(alpha, beta, x):
 
 
 def MakeLocationPmf(alpha, beta, locations):
-    """Computes the Pmf of the locations, given alpha and beta. 
+    """Computes the Pmf of the locations, given alpha and beta.
 
     Given that the shooter is at coordinates (alpha, beta),
     the probability of hitting any spot is inversely proportionate
@@ -66,8 +66,8 @@ class Paintball(thinkbayes.Suite, thinkbayes.Joint):
         locations: possible locations along the wall
         """
         self.locations = locations
-        pairs = [(alpha, beta) 
-                 for alpha in alphas 
+        pairs = [(alpha, beta)
+                 for alpha in alphas
                  for beta in betas]
         thinkbayes.Suite.__init__(self, pairs)
 
@@ -114,17 +114,17 @@ def MakePosteriorPlot(suite):
     marginal_beta = suite.Marginal(1)
     marginal_beta.name = 'beta'
 
-    print 'alpha CI', marginal_alpha.CredibleInterval(50)
-    print 'beta CI', marginal_beta.CredibleInterval(50)
+    print('alpha CI', marginal_alpha.CredibleInterval(50))
+    print('beta CI', marginal_beta.CredibleInterval(50))
 
     thinkplot.PrePlot(num=2)
 
     #thinkplot.Pmf(marginal_alpha)
     #thinkplot.Pmf(marginal_beta)
-    
+
     thinkplot.Cdf(thinkbayes.MakeCdfFromPmf(marginal_alpha))
     thinkplot.Cdf(thinkbayes.MakeCdfFromPmf(marginal_beta))
-    
+
     thinkplot.Save('paintball2',
                 xlabel='Distance',
                 ylabel='Prob',
@@ -136,7 +136,7 @@ def MakeConditionalPlot(suite):
     """Plots marginal CDFs for alpha conditioned on beta.
 
     suite: posterior joint distribution of location
-    """    
+    """
     betas = [10, 20, 40]
     thinkplot.PrePlot(num=len(betas))
 

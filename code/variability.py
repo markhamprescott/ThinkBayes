@@ -33,7 +33,7 @@ class Height(thinkbayes.Suite, thinkbayes.Joint):
         sigmas: sequence of possible sigmas
         name: string name for the Suite
         """
-        pairs = [(mu, sigma) 
+        pairs = [(mu, sigma)
                  for mu in mus
                  for sigma in sigmas]
 
@@ -111,7 +111,7 @@ class Height(thinkbayes.Suite, thinkbayes.Joint):
 
         # compute summary stats
         median, s = MedianS(xs, num_sigmas=NUM_SIGMAS)
-        print 'median, s', median, s
+        print('median, s', median, s)
 
         self.LogUpdateSetABC(n, median, s)
 
@@ -153,8 +153,8 @@ def FindPriorRanges(xs, num_points, num_stderrs=3.0, median_flag=False):
     xs: sample
     num_points: number of values in each dimension
     num_stderrs: number of standard errors to include on either side
-    
-    Returns: sequence of mus, sequence of sigmas    
+
+    Returns: sequence of mus, sequence of sigmas
     """
     def MakeRange(estimate, stderr):
         """Makes a linear range around the estimate.
@@ -176,7 +176,7 @@ def FindPriorRanges(xs, num_points, num_stderrs=3.0, median_flag=False):
         m = numpy.mean(xs)
         s = numpy.std(xs)
 
-    print 'classical estimators', m, s
+    print('classical estimators', m, s)
 
     # compute ranges for m and s
     stderr_m = s / math.sqrt(n)
@@ -235,11 +235,11 @@ def PlotCdfs(d, labels):
         cdf = thinkbayes.MakeCdfFromList(xs)
         thinkplot.Cdf(cdf, label=labels[key])
     thinkplot.Show()
-                  
+
 
 def PlotPosterior(suite, pcolor=False, contour=True):
     """Makes a contour plot.
-    
+
     suite: Suite that maps (mu, sigma) to probability
     """
     thinkplot.Clf()
@@ -262,19 +262,19 @@ def PlotCoefVariation(suites):
     pmfs = {}
     for label, suite in suites.iteritems():
         pmf = CoefVariation(suite)
-        print 'CV posterior mean', pmf.Mean()
+        print('CV posterior mean', pmf.Mean())
         cdf = thinkbayes.MakeCdfFromPmf(pmf, label)
         thinkplot.Cdf(cdf)
-    
+
         pmfs[label] = pmf
 
     thinkplot.Save(root='variability_cv',
                 xlabel='Coefficient of variation',
                 ylabel='Probability')
 
-    print 'female bigger', thinkbayes.PmfProbGreater(pmfs['female'],
+    print('female bigger', thinkbayes.PmfProbGreater(pmfs['female'],)
                                                      pmfs['male'])
-    print 'male bigger', thinkbayes.PmfProbGreater(pmfs['male'],
+    print('male bigger', thinkbayes.PmfProbGreater(pmfs['male'],)
                                                    pmfs['female'])
 
 
@@ -440,14 +440,14 @@ def Summarize(xs):
 
     xs: sequence of values
     """
-    # print smallest and largest
+    # print(smallest and largest)
     xs.sort()
-    print 'smallest', xs[:10]
-    print 'largest', xs[-10:]
+    print('smallest', xs[:10])
+    print('largest', xs[-10:])
 
-    # print median and interquartile range
+    # print(median and interquartile range)
     cdf = thinkbayes.MakeCdfFromList(xs)
-    print cdf.Percentile(25), cdf.Percentile(50), cdf.Percentile(75)
+    print(cdf.Percentile(25), cdf.Percentile(50), cdf.Percentile(75))
 
 
 def RunEstimate(update_func, num_points=31, median_flag=False):
@@ -465,7 +465,7 @@ def RunEstimate(update_func, num_points=31, median_flag=False):
     suites = {}
     for key, xs in d.iteritems():
         name = labels[key]
-        print name, len(xs)
+        print(name, len(xs))
         Summarize(xs)
 
         xs = thinkstats.Jitter(xs, 1.3)
@@ -474,14 +474,14 @@ def RunEstimate(update_func, num_points=31, median_flag=False):
         suite = Height(mus, sigmas, name)
         suites[name] = suite
         update_func(suite, xs)
-        print 'MLE', suite.MaximumLikelihood()
+        print('MLE', suite.MaximumLikelihood())
 
         PlotPosterior(suite)
 
         pmf_m = suite.Marginal(0)
         pmf_s = suite.Marginal(1)
-        print 'marginal mu', pmf_m.Mean(), pmf_m.Var()
-        print 'marginal sigma', pmf_s.Mean(), pmf_s.Var()
+        print('marginal mu', pmf_m.Mean(), pmf_m.Var())
+        print('marginal sigma', pmf_s.Mean(), pmf_s.Var())
 
         # PlotMarginals(suite)
 
@@ -539,4 +539,3 @@ marginal mu 163.1805214 7.9399898468e-07
 marginal sigma 7.29969524118 3.26257030869e-14
 
 """
-
